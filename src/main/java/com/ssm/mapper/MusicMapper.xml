@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mapper.MusicMapper">
+	<resultMap type="com.ssm.pojo.Music" id="music" >  
+	    <id  property="musicId"        column="music_id" javaType="int" jdbcType="INTEGER"/>  
+	    <result property="name"       column="name" javaType="String" jdbcType="VARCHAR"/> 
+	    <result property="singerId"	column="singer_id" javaType="int" jdbcType="INTEGER"/>
+	    <result property="singerName"	column="singer_name" javaType="String" jdbcType="VARCHAR"/>
+	    <result property="type"        column="type"  javaType="String" jdbcType="VARCHAR"/>  
+	    <result property="src"   column="src"  javaType="String" jdbcType="VARCHAR"/>  
+	    <result property="uploadTime"  column="upload_time" javaType="date" jdbcType="DATE" />  
+	    <result property="uploader" column="uploader" javaType="int" jdbcType="INTEGER"/>
+	    <result property="playNum" column="play_num" javaType="int" jdbcType="INTEGER"/>
+	    <result property="lyric" column="lyric" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap> 
+	<sql id="allColumn">
+		a.music_id,a.name,a.singer_id,a.type,a.src,a.upload_time,a.uploader,a.play_num,a.lyric
+	</sql>
+
+		<!-- ********* ********* -->
+		<select id="getRank" resultMap="music" parameterType="int">
+			SELECT 
+			<include refid="allColumn"/>
+			from app_music a
+		</select>
+		
+	<select id="getMInfo" resultMap="music" parameterType="int">
+		SELECT 
+		<include refid="allColumn"/>
+		,b.singer_name from app_music a,app_singer b where music_id=#{id} and a.singer_id=b.singer_id
+	</select>
+
+	
+</mapper>

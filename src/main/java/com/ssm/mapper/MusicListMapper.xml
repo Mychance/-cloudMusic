@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mapper.MusicListMapper">
+	<resultMap type="com.ssm.pojo.MusicList" id="musicList" >  
+	    <id  property="id"        column="id" javaType="int" jdbcType="INTEGER"/>  
+	    <result property="listName"       column="list_name" javaType="String" jdbcType="VARCHAR"/> 
+	    <result property="creatorId"	column="creator_id" javaType="int" jdbcType="INTEGER"/>
+	    <result property="storeNum" column="store_num" javaType="int" jdbcType="INTEGER"/>
+	    <result property="musicNum" column="music_num" javaType="int" jdbcType="INTEGER"/>
+	</resultMap> 
+	<sql id="allColumn">
+		a.id,a.list_name,a.creator_id,a.store_num,a.music_num
+	</sql>
+
+		<!-- ********* ********* -->
+		<select id="getListsByCreatorId" resultMap="musicList" parameterType="int">
+			SELECT 
+			<include refid="allColumn"/>
+			from app_list a
+			where creator_id = #{creatorId}
+		</select>
+		
+		<insert id="addMusicList" parameterType="int" useGeneratedKeys="true" keyProperty="id">
+			insert into app_list (list_name,creator_id,store_num,music_num) values(#{listName},#{creatorId},#{storeNum},#{musicNum})
+		</insert>
+		
+		<update id="updateMusicNum" parameterType="int">
+			update app_list set music_num=music_num+1 where id=#{musicListId}
+		</update>
+	
+</mapper>

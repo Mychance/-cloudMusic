@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
+	default-lazy-init="true">
+
+	<description>数据源环境配置文件, 配置开发/生产环境数据源</description>
+	<!-- 引入配置文件 -->
+    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties" />
+    </bean>
+
+
+	<!-- 数据源配置, 在生产环境使用应用服务器的数据库连接池 -->
+
+	<!-- 数据源配置, 主要用于开发测试环境 -->
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password"  value="${jdbc.password}" />
+<!-- 配置连接池的基本属性，maxActive是允许创建的最大连接数 0表示没有限制 -->
+		  <property name="maxActive">  
+		     <value>20</value>
+		  </property>
+		  <!-- maxIdle用来配置连接池的空闲数 0表示无限制-->
+		  <property name="maxIdle">
+		     <value>20</value>
+		  </property>
+		  <!-- maxWait用来设定等待连接的时间，如果在规定的时间内，连接池还没有连接，那么就报异常 超时等待时间以毫秒为单位 -1表示无限制-->
+		  <property name="maxWait">
+		     <value>3600</value>
+		  </property>
+		  <!-- 默认的SQL语句自动提交状态(开启或关闭)设置由连接池本身设置(false由连接池定)，不设置该值setAutoCommit方法不被调用； -->
+		  <property name="defaultAutoCommit" value="false" />
+		  <!-- 毫秒秒检查一次连接池中空闲的连接, -->
+		  <property name="timeBetweenEvictionRunsMillis" value="3600000" />
+		  <!--把空闲时间超过minEvictableIdleTimeMillis毫秒的连接断开, 直到连接池中的连接数到minIdle为止 连接池中连接可空闲的时间,毫秒  -->
+		  <property name="minEvictableIdleTimeMillis" value="3600000" />
+			<property name="testWhileIdle" value="true" />
+		  <!-- //自动回收连接池，避免连接池泄露 -->
+		  <property name="removeAbandoned"> 
+		     <value>true</value> 
+		  </property>
+		  <!-- 自动回收超时时间(以秒数为单位) -->    
+		  <property name="removeAbandonedTimeout">
+		     <value>300</value> 
+		  </property>
+	</bean>
+</beans>

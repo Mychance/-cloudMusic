@@ -1,0 +1,188 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
+  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+   <head>
+    <meta charset="UTF-8">
+    <title>首页 - 在线音乐共享社区,音乐你的生活 ~!</title>
+
+	
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/layout.css"/>
+    <link rel="stylesheet" href="css/musicPlayer/style.css"/>
+    <link rel="icon" href="pic/icon.png"/>
+    
+
+    
+    
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="js/musicPlayer/jquery.jplayer.js"></script>
+    <script src="js/musicPlayer/ttw-music-player-min.js"></script>
+</head>
+<!--本页面播放器依赖于开源的ttw-music-player,在此对作者表示感谢-->
+<body style="padding-top: 50px">
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><span class=" icon-cloud"></span> 音乐网站</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#"><span class="icon-comments"> 主页</span></a></li>
+                <li><a href="upload.html"><span class="icon-cloud-upload"> 上传</span></a></li>
+                <li><a href="pages/musiclab" target="_blank"><span class="icon-suitcase"> 音乐实验室</span></a></li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input id="top-nav-search" type="text" class="form-control" placeholder="歌曲">
+                </div>
+                <a id="search_btn" href="#" type="button" class="btn btn-warning" data-toggle="modal" data-target="#search_box">搜 索</a>
+            </form>
+            <div class="navbar-form pull-right">
+                <a class="btn btn-success" id="loginAndReg" href="pages/regAcc.html">注 册</a>
+                <button class="btn btn-default" id="loginAndReg1" data-toggle="modal" data-target="#user_Login">登 录
+                </button>
+                <a id="user_info_nav" href="#" style="visibility: hidden"><img id="user_img_nav" class="userHead_nav"
+                                                                               src=""><span id="user_name_nav"
+                                                                                            style="font-size: medium; color: white"></span>
+                    <ul id="user_info_dropdown" style="top: 50px; right: 0;">
+                        <li>
+                            个人中心
+                        </li>
+                        <li id="listUser">
+                            我的收藏
+                        </li>
+                        <li id="exitUser">
+                            退出
+                        </li>
+                    </ul>
+                </a>
+            </div>
+        </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</div><!--导航栏结束-->
+<div id="divMain" class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <div id="left_div">
+                <h3>推荐歌曲</h3>
+                <div id="musicList">
+                    <table id="musicTable">
+                        <tr>
+                            <th>预览</th>
+                            <th>歌曲</th>
+                            <th>歌手</th>
+                            <th>专辑</th>
+                            <th>收藏</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div><!--左侧栏结束-->
+        <div class="col-xs-4" id="music_box_play">
+            <div id="infoMat">
+                <h1>登录后</h1>
+                <h1>将在这里显示</h1>
+                <h1>你的歌单</h1>
+            </div>
+            <div id="musicplayer">
+            </div>
+        </div><!--右侧栏结束-->
+    </div>
+</div><!--主页面结束-->
+<div class="modal fade" id="user_Login" tabindex="-1" role="dialog" aria-labelledby="user_Msg_to" aria-hidden="true">
+    <div class="modal-dialog" id="userLoginBox">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="user_Msg_to">登 录</h4>
+            </div>
+            <div class="modal-body">
+                <div id="inputBox" class="text-center">
+                    <p>登录后在云端保存你的歌单!</p>
+                    <form id="form1">
+                        <p>
+                        <div id="div-email_address" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input id="user_id" class="form-control" type="text" placeholder="用户名">
+                        </div>
+                        </p>
+                        <p>
+                        <div id="div-password" class="input-group">
+                            <span class="input-group-addon"><i class="icon-key"></i></span>
+                            <input id="user_pass" class="form-control" type="password" placeholder="密码">
+                        </div>
+                        </p>
+                        <a id="login_to" class="btn btn-block btn-success">
+                            <i class="glyphicon glyphicon-log-in"></i> 登 录</a>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    关 闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div><!--弹出框口结束-->
+<div class="modal fade" id="search_box" tabindex="-1" role="dialog" aria-labelledby="user_Msg_to" aria-hidden="true">
+    <div class="modal-dialog" id="searchBox">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">搜索结果</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <table id="search_list">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    关 闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<jsp:include page="audio.jsp" /> 
+<script src="js/newFunction.js"></script>
+<script>
+    //设置下拉框位置,绑定到窗口resize
+    dropdownPosition();
+    window.addEventListener("resize", dropdownPosition, false);
+    //给登录框绑定样式事件
+    loginStyle("user_id", "user_pass", "login_to");
+    //识别登录状态
+    window.addLoadEvent(checkLogin);
+    //绑定退出登录按钮事件
+    document.getElementById("exitUser").addEventListener("click", exitLogin, false);
+    //me.html锁定
+    document.getElementById("listUser").addEventListener("click",function(){
+        document.getElementById("user_info_nav").setAttribute("href","me.html");
+    },false);
+    //打印默认歌单表格
+    var date = new Date();
+    $.getJSON("data/json/all_default_list.json",{Time:date.toDateString(),Math:Math.random()},function(data){
+        var table = document.getElementById("musicTable");
+        for(var i=data.length-1;i>=0;i--){
+            var newTr = table.insertRow();
+            newTr.innerHTML = "<td><img class='small_cover' src='"+data[i].cover+"'></td><td>"+data[i].title+"</td><td>"+data[i].artist+"</td><td>"+data[i].duration+"</td><td><a href='#' onclick='addByList(this)' target='_blank'><span class='icon-cloud'></span> 添加</a></td>"
+        }
+    });
+    //add search music
+    document.getElementById("search_btn").addEventListener("click",searchMusic,false);
+</script>
+ 
+</body>
+</html>

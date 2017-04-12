@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mapper.MusicRListMapper">
+ 	<resultMap type="com.ssm.pojo.MusicRList" id="musicRList" >  
+	    <id  property="id"        column="id" javaType="int" jdbcType="INTEGER"/>  
+	    <result property="musicId"	column="music_id" javaType="int" jdbcType="INTEGER"/>
+	    <result property="listId" column="list_id" javaType="int" jdbcType="INTEGER"/>
+	</resultMap> 
+	<sql id="allColumn">
+		a.id,a.music_id,a.list_id
+	</sql>
+
+	<insert id="addMusicToList" parameterType="com.ssm.pojo.MusicRList">
+		insert into app_musicRList (music_id,list_id) values(#{musicId},#{listId})
+	</insert>
+		
+	<select id="getMusicRList" resultMap="musicRList" parameterType="com.ssm.pojo.MusicRList">
+		select 
+		<include refid="allColumn"/>
+		from app_musicRList a where music_id=#{musicId} and list_id=#{listId}
+	</select>
+
+	
+</mapper>
